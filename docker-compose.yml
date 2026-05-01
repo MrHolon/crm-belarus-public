@@ -1,0 +1,46 @@
+# ===================================================================
+# CRM Belarus — root docker-compose
+# -------------------------------------------------------------------
+# This file wires together:
+#   1. Supabase self-hosted stack (project name: supabase-crm)
+#   2. UI container (service name: crm-belarus)
+#
+# IMPORTANT
+# - The Supabase stack must be fetched from the official repo
+#   (https://github.com/supabase/supabase/tree/master/docker) and
+#   dropped into ./supabase/ before the first `docker compose up`.
+# - See skills/01-infrastructure.md for the full setup procedure.
+# - All secrets live in ./.env (copy from ./.env.example). NEVER commit .env.
+# - Ports are deliberately shifted off the defaults to avoid collisions
+#   with an existing Supabase container on the host machine.
+# ===================================================================
+
+name: supabase-crm
+
+services:
+  # -----------------------------------------------------------------
+  # UI: Vite + React SPA built to static files, served by nginx
+  # -----------------------------------------------------------------
+  crm-belarus:
+    container_name: crm-belarus
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      # Vite inlines env vars at build time, so we pass them as ARGs,
+      # not runtime environment variables.
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+    ports:
+      - "8080:80"
+    depends_on:
+      - kong
+    restart: unless-stopped
+
+# -----------------------------------------------------------------
+# Supabase services are defined in ./supabase/docker-compose.yml
+# and composed in via the `include` directive (Compose v2.20+).
+# The included stack has its own env file (./supabase/.env).
+# -----------------------------------------------------------------
+include:
+  - path: ./supabase/docker-compose.yml

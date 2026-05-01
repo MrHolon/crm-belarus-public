@@ -1,0 +1,24 @@
+# Normalize line endings across Windows / Linux / macOS.
+# The repository stores LF; Git converts to CRLF on Windows checkout
+# only where it matters (nowhere — we use LF everywhere).
+
+* text=auto eol=lf
+
+# Binary files — never touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.dump binary
+
+# Shell scripts — always LF
+*.sh text eol=lf
+
+# Windows batch — always CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf

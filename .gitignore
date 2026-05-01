@@ -1,0 +1,163 @@
+# ===================================================================
+# Environment & secrets
+# ===================================================================
+.env
+.env.local
+.env.*.local
+.env.old
+*.pem
+*.key
+
+# -------------------------------------------------------------------
+# Deliberate opt-in for this public demo repo:
+# Commit root .env, supabase/.env, local-test-accounts.md and the
+# latest pg_dump so `docker compose up` works out of the box.
+# All values are local-dev defaults (Supabase demo keys, etc.).
+# DO NOT copy this setup to any deployment reachable from the Internet.
+# -------------------------------------------------------------------
+!/.env
+!/supabase/.env
+!/local-test-accounts.md
+
+# Локальные логины/пароли для входа (см. local-test-accounts.example.md)
+local-test-accounts.md
+
+# ===================================================================
+# Supabase self-hosted — persistent data and runtime artifacts
+# -------------------------------------------------------------------
+# Config files under volumes/ (kong.yml, vector.yml, init SQL, pooler
+# config, edge-function sources) MUST be tracked — they are mounted
+# into containers and any change to them needs to be reviewed. Only
+# runtime data directories should be ignored.
+# ===================================================================
+supabase/volumes/db/data/
+supabase/volumes/storage/
+supabase/.branches/
+supabase/.temp/
+
+# ===================================================================
+# Local backups (pg_dump output)
+# ===================================================================
+backups/
+*.sql.gz
+*.dump
+
+# Opt-in: commit the bundled initial dump so the repo restores out of
+# the box. Future dumps placed next to it stay ignored.
+!/backups/
+!/backups/README.md
+!/backups/supabase-postgres-20260418-122604.dump
+
+# ===================================================================
+# Node / Vite
+# ===================================================================
+node_modules/
+app/node_modules/
+.pnpm-store/
+app/dist/
+app/build/
+app/.vite/
+app/coverage/
+
+# ===================================================================
+# TypeScript incremental build
+# ===================================================================
+*.tsbuildinfo
+
+# ===================================================================
+# Logs
+# ===================================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===================================================================
+# Playwright / test output
+# ===================================================================
+playwright-report/
+test-results/
+tests/e2e/.auth/
+
+# ===================================================================
+# IDE / editor
+# ===================================================================
+.vscode/*
+!.vscode/settings.json.example
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===================================================================
+# OS
+# ===================================================================
+Desktop.ini
+$RECYCLE.BIN/
+
+# ===================================================================
+# Cursor AI
+# ===================================================================
+# Commit mcp.json so the whole team gets the same MCP setup, but keep
+# everything else in .cursor/ local.
+.cursor/*
+!.cursor/mcp.json
+
+# ===================================================================
+# Agent skills CLI (https://www.npmjs.com/package/skills)
+# -------------------------------------------------------------------
+# Source of truth (actual files) lives in .agents/skills/.
+# The .<agent>/ folders and skills/<package>/ below them are just
+# Windows junctions/symlinks to .agents/skills/*; they are regenerated
+# on any machine via `npx skills experimental_sync` and MUST stay out
+# of git (Windows junctions break checkouts on Linux/macOS).
+# ===================================================================
+.adal/
+.augment/
+.bob/
+.claude/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+
+# Junctions into .agents/skills/ that the CLI creates alongside our own
+# hand-written markdown docs in skills/.
+skills/supabase/
+skills/supabase-postgres-best-practices/
+
+# ===================================================================
+# Internal / AI-only docs (not shipped to the public repository)
+# ===================================================================
+skills/
+ТЗ/
+AGENTS.md
+техническое задание.md
+.claude/
+.agents/
+skills-lock.json
